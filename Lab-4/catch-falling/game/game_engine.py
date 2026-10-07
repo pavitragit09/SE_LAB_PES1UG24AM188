@@ -16,7 +16,10 @@ from game.falling_object import FallingObject
 from game.collision import is_caught
 from game.renderer import WIDTH, HEIGHT
 
-SPAWN_INTERVAL_FRAMES = 50
+SPAWN_INTERVAL_MIN = 35
+SPAWN_INTERVAL_MAX = 75
+MAX_ONSCREEN_OBJECTS = 5
+MIN_SPAWN_DISTANCE = 80
 MAX_MISSES = 5
 
 
@@ -25,13 +28,29 @@ class GameEngine:
         self.basket = Basket(x=WIDTH / 2, y=HEIGHT - 30)
         self.objects = []
         self.frames_until_spawn = 0
+        self.last_spawn_x = None
         self.score = 0
         self.misses = 0
         self.game_over = False
 
     def _spawn_object(self):
-        x = random.randint(20, WIDTH - 20)
-        self.objects.append(FallingObject(x=x, y=-14, speed=3))
+        if len(self.objects) >= MAX_ONSCREEN_OBJECTS:
+            return
+
+        radius = 14
+        min_x = radius
+        max_x = WIDTH - radius
+        best_x = random.randint(min_x, max_x)
+
+        if self.last_spawn_x is not None:
+            for _ in range(10):
+                candidate_x = random.randint(min_x, max_x)
+                if abs(candidate_x - self.last_spawn_x) >= MIN_SPAWN_DISTANCE:
+                    best_x = candidate_x
+                    break
+
+        self.last_spawn_x = best_x
+        self.objects.append(FallingObject(x=best_x, y=-radius, radius=radius, speed=3))
 
     def handle_input(self, keys_pressed):
         if self.game_over:
@@ -53,7 +72,7 @@ class GameEngine:
         self.frames_until_spawn -= 1
         if self.frames_until_spawn <= 0:
             self._spawn_object()
-            self.frames_until_spawn = SPAWN_INTERVAL_FRAMES
+            self.frames_until_spawn = random.randint(SPAWN_INTERVAL_MIN, SPAWN_INTERVAL_MAX)
 
         for obj in self.objects:
             obj.update()
