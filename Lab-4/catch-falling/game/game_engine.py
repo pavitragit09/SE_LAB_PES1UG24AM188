@@ -62,10 +62,13 @@ class GameEngine:
             obj.update()
 
         basket_rect = self.basket.get_rect()
-        for obj in self.objects:                  # BUG: mutating this list while iterating over it
+        survivors = []
+        for obj in self.objects:
             if is_caught(basket_rect, obj):
                 self.score += 1
-                self.objects.remove(obj)
+            else:
+                survivors.append(obj)
+        self.objects = survivors
 
         missed = [o for o in self.objects if o.is_past_bottom(HEIGHT)]
         if missed:
