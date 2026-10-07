@@ -59,6 +59,8 @@ class GameEngine:
             self.basket.move_left()
         if keys_pressed[pygame.K_RIGHT] or keys_pressed[pygame.K_d]:
             self.basket.move_right()
+        if keys_pressed[pygame.K_SPACE]:
+            self.basket.activate_boost()
         self.basket.clamp(WIDTH)
 
     def handle_keydown(self, key):
@@ -68,6 +70,8 @@ class GameEngine:
     def update(self):
         if self.game_over:
             return
+
+        self.basket.update()
 
         self.frames_until_spawn -= 1
         if self.frames_until_spawn <= 0:
@@ -98,6 +102,15 @@ class GameEngine:
         renderer.draw_scene(surface, self.basket, self.objects)
         renderer.draw_text(surface, font, f"Score: {self.score}", (10, 10))
         renderer.draw_text(surface, font, f"Misses: {self.misses}/{MAX_MISSES}", (10, 36))
+
+        if self.basket.is_boosted:
+            seconds_left = self.basket.boost_timer // 60 + 1
+            renderer.draw_text(surface, font, f"BOOST! ({seconds_left}s)", (10, 62), color=(255, 200, 50))
+        elif self.basket.cooldown_timer > 0:
+            seconds_cd = self.basket.cooldown_timer // 60 + 1
+            renderer.draw_text(surface, font, f"Boost Cooldown ({seconds_cd}s)", (10, 62), color=(150, 150, 150))
+        else:
+            renderer.draw_text(surface, font, "SPACE: Speed Boost", (10, 62), color=(100, 220, 255))
 
         if self.game_over:
             renderer.draw_banner(surface, font, f"Game Over! Final score: {self.score}. Press R to restart.")
