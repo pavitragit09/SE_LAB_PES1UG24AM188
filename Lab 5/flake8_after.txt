@@ -1,0 +1,2 @@
+﻿.\shuttle_system.py:3:1: F401 'random' imported but unused
+.\shuttle_system.py:86:1: E302 expected 2 blank lines, found 1

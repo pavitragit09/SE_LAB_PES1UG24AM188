@@ -1,0 +1,6 @@
+﻿************* Module shuttle_system
+shuttle_system.py:3:0: W0611: Unused import random (unused-import)
+
+------------------------------------------------------------------
+Your code has been rated at 9.84/10 (previous run: 9.67/10, +0.17)
+
