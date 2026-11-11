@@ -1,0 +1,282 @@
+Command exited with code 1.
+
+Command output:
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.1.1, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7
+configfile: pytest.ini
+plugins: anyio-4.15.1, hypothesis-6.170.15, locust-2.47.0, timeout-2.4.0
+collecting ... collected 11 items
+
+test_processor.py::test_parse_vitals_summary_no_crash FAILED             [  9%]
+test_processor.py::test_compute_patient_bmi_safe FAILED                  [ 18%]
+test_processor.py::test_assign_ward_bed_safe FAILED                      [ 27%]
+test_processor.py::test_unexpected_types_handling FAILED                 [ 36%]
+test_processor.py::test_parse_vitals_summary_properties PASSED           [ 45%]
+test_processor.py::test_compute_patient_bmi_valid_calculation PASSED     [ 54%]
+test_processor.py::test_compute_patient_bmi_zero_or_negative_weight FAILED [ 63%]
+test_processor.py::test_compute_patient_bmi_zero_or_negative_height FAILED [ 72%]
+test_processor.py::test_assign_ward_bed_valid_allocations PASSED         [ 81%]
+test_processor.py::test_assign_ward_bed_invalid_ward FAILED              [ 90%]
+test_processor.py::test_assign_ward_bed_zero_or_negative_bed FAILED      [100%]
+
+================================== FAILURES ===================================
+_____________________ test_parse_vitals_summary_no_crash ______________________
+
+    @given(st.text() | st.none())
+>   def test_parse_vitals_summary_no_crash(s):
+                   ^^^
+
+test_processor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+test_processor.py:18: in test_parse_vitals_summary_no_crash
+    result = parse_vitals_summary(s)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+vitals_csv = None
+
+    def parse_vitals_summary(vitals_csv):
+>       parts = vitals_csv.split(',')
+                ^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'split'
+E       Failing test case: test_parse_vitals_summary_no_crash(
+E           s=None,
+E       )
+
+processor.py:2: AttributeError
+________________________ test_compute_patient_bmi_safe ________________________
+
+    @given(st.text() | st.none())
+>   def test_compute_patient_bmi_safe(s):
+                   ^^^
+
+test_processor.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+test_processor.py:34: in test_compute_patient_bmi_safe
+    result = compute_patient_bmi(s)
+             ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+bmi_string = None
+
+    def compute_patient_bmi(bmi_string):
+>       w_str, h_str = bmi_string.split('/')
+                       ^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'split'
+E       Failing test case: test_compute_patient_bmi_safe(
+E           s=None,
+E       )
+
+processor.py:10: AttributeError
+__________________________ test_assign_ward_bed_safe __________________________
+
+    @given(st.text() | st.none())
+>   def test_assign_ward_bed_safe(s):
+                   ^^^
+
+test_processor.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+test_processor.py:51: in test_assign_ward_bed_safe
+    result = assign_ward_bed(s)
+             ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+allocation_code = None
+
+    def assign_ward_bed(allocation_code):
+>       ward, bed_str = allocation_code.strip().split('-')
+                        ^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'strip'
+E       Failing test case: test_assign_ward_bed_safe(
+E           s=None,
+E       )
+
+processor.py:17: AttributeError
+_______________________ test_unexpected_types_handling ________________________
+
+    @given(st.one_of(st.integers(), st.floats(), st.booleans(), st.lists(st.integers()), st.dictionaries(st.text(), st.text())))
+>   def test_unexpected_types_handling(val):
+                   ^^^
+
+test_processor.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+test_processor.py:68: in test_unexpected_types_handling
+    parse_vitals_summary(val)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+vitals_csv = 0
+
+    def parse_vitals_summary(vitals_csv):
+>       parts = vitals_csv.split(',')
+                ^^^^^^^^^^^^^^^^
+E       AttributeError: 'int' object has no attribute 'split'
+E       Failing test case: test_unexpected_types_handling(
+E           val=0,  # or any other generated value
+E       )
+
+processor.py:2: AttributeError
+______________ test_compute_patient_bmi_zero_or_negative_weight _______________
+
+    @given(
+>       weight=st.floats(max_value=0.0, allow_nan=False, allow_infinity=False),
+                   ^^^
+        height=st.floats(min_value=0.5, max_value=2.5, allow_nan=False, allow_infinity=False)
+    )
+
+test_processor.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+weight = 0.0, height = 1.0
+
+    @given(
+        weight=st.floats(max_value=0.0, allow_nan=False, allow_infinity=False),
+        height=st.floats(min_value=0.5, max_value=2.5, allow_nan=False, allow_infinity=False)
+    )
+    def test_compute_patient_bmi_zero_or_negative_weight(weight, height):
+        """
+        Edge case: Non-positive weight (zero or negative) must raise ValueError.
+        """
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+E       Failing test case: test_compute_patient_bmi_zero_or_negative_weight(
+E           # The test always failed when commented parts were varied together.
+E           weight=0.0,  # or any other generated value
+E           height=1.0,  # or any other generated value
+E       )
+
+test_processor.py:120: Failed
+______________ test_compute_patient_bmi_zero_or_negative_height _______________
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\test_processor.py", line 125, in test_compute_patient_bmi_zero_or_negative_height
+  |     weight=st.floats(min_value=10.0, max_value=150.0, allow_nan=False, allow_infinity=False),
+  |                ^^^
+  |   File "C:\Users\pavitra\AppData\Roaming\Python\Python313\site-packages\hypothesis\core.py", line 2334, in wrapped_test
+  |     raise the_error_hypothesis_found
+  | BaseExceptionGroup: Hypothesis found 3 distinct failures. (3 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\test_processor.py", line 134, in test_compute_patient_bmi_zero_or_negative_height
+    |     compute_patient_bmi(f"{weight}/{height}")
+    |     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\processor.py", line 13, in compute_patient_bmi
+    |     bmi = weight / (height ** 2)
+    |                     ~~~~~~~^^~~
+    | OverflowError: (34, 'Result too large')
+    | Failing test case: test_compute_patient_bmi_zero_or_negative_height(
+    |     # The test always failed when commented parts were varied together.
+    |     weight=10.0,  # or any other generated value
+    |     height=-1.3407807929942597e+154,  # or any other generated value
+    | )
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\test_processor.py", line 133, in test_compute_patient_bmi_zero_or_negative_height
+    |     with pytest.raises(ValueError):
+    |          ~~~~~~~~~~~~~^^^^^^^^^^^^
+    |   File "C:\Users\pavitra\AppData\Roaming\Python\Python313\site-packages\_pytest\raises.py", line 699, in __exit__
+    |     fail(f"DID NOT RAISE {self.expected_exceptions[0].__name__}")
+    |     ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\pavitra\AppData\Roaming\Python\Python313\site-packages\_pytest\outcomes.py", line 162, in __call__
+    |     raise Failed(msg=reason, pytrace=pytrace)
+    | Failed: DID NOT RAISE ValueError
+    | Failing test case: test_compute_patient_bmi_zero_or_negative_height(
+    |     # The test always failed when commented parts were varied together.
+    |     weight=10.0,  # or any other generated value
+    |     height=-1.0,  # or any other generated value
+    | )
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\test_processor.py", line 134, in test_compute_patient_bmi_zero_or_negative_height
+    |     compute_patient_bmi(f"{weight}/{height}")
+    |     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\processor.py", line 13, in compute_patient_bmi
+    |     bmi = weight / (height ** 2)
+    |           ~~~~~~~^~~~~~~~~~~~~~~
+    | ZeroDivisionError: float division by zero
+    | Failing test case: test_compute_patient_bmi_zero_or_negative_height(
+    |     weight=10.0,  # or any other generated value
+    |     height=0.0,
+    | )
+    +------------------------------------
+______________________ test_assign_ward_bed_invalid_ward ______________________
+
+    @given(
+>       ward=st.text().filter(lambda w: w.strip().upper() not in ["ER", "ICU", "GEN", "PED"] and "-" not in w),
+                   ^^^
+        bed=st.integers(min_value=1, max_value=100)
+    )
+
+test_processor.py:159: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+test_processor.py:168: in test_assign_ward_bed_invalid_ward
+    assign_ward_bed(code)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+allocation_code = '-1'
+
+    def assign_ward_bed(allocation_code):
+        ward, bed_str = allocation_code.strip().split('-')
+        ward_names = {
+            "ER": "Emergency Room",
+            "ICU": "Intensive Care Unit",
+            "GEN": "General Ward",
+            "PED": "Pediatrics"
+        }
+        bed_num = int(bed_str)
+>       return f"{ward_names[ward.upper()]} Bed #{bed_num}"
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: ''
+E       Failing test case: test_assign_ward_bed_invalid_ward(
+E           # The test always failed when commented parts were varied together.
+E           ward='',  # or any other generated value
+E           bed=1,  # or any other generated value
+E       )
+
+processor.py:25: KeyError
+__________________ test_assign_ward_bed_zero_or_negative_bed __________________
+
+    @given(
+>       ward=st.sampled_from(["ER", "ICU", "GEN", "PED"]),
+                   ^^^
+        bed=st.integers(max_value=0)
+    )
+
+test_processor.py:172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ward = 'ER', bed = 0
+
+    @given(
+        ward=st.sampled_from(["ER", "ICU", "GEN", "PED"]),
+        bed=st.integers(max_value=0)
+    )
+    def test_assign_ward_bed_zero_or_negative_bed(ward, bed):
+        """
+        Edge case: Non-positive bed numbers (<= 0) must raise ValueError.
+        """
+        code = f"{ward}-{bed}"
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+E       Failing test case: test_assign_ward_bed_zero_or_negative_bed(
+E           ward='ER',  # or any other generated value
+E           bed=0,
+E       )
+E       Explanation:
+E           These lines were always and only run by failing test cases:
+E               C:\Users\pavitra\Documents\se lab 5\SE_LAB_PES1UG24AM188\Lab 7\processor.py:19
+
+test_processor.py:180: Failed
+=========================== short test summary info ===========================
+FAILED test_processor.py::test_parse_vitals_summary_no_crash - AttributeError...
+FAILED test_processor.py::test_compute_patient_bmi_safe - AttributeError: 'No...
+FAILED test_processor.py::test_assign_ward_bed_safe - AttributeError: 'NoneTy...
+FAILED test_processor.py::test_unexpected_types_handling - AttributeError: 'i...
+FAILED test_processor.py::test_compute_patient_bmi_zero_or_negative_weight - ...
+FAILED test_processor.py::test_compute_patient_bmi_zero_or_negative_height - ...
+FAILED test_processor.py::test_assign_ward_bed_invalid_ward - KeyError: ''
+FAILED test_processor.py::test_assign_ward_bed_zero_or_negative_bed - Failed:...
+======================== 8 failed, 3 passed in 25.68s =========================
